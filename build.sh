@@ -1,4 +1,4 @@
-GITHUB_REF=refs/pull/1/merge
+GITHUB_REF=refs/pull/2/merge
 CI_DIR=/home/eroussy/Documents/RTE/ci-seapath
 
 PR_N=`echo $GITHUB_REF | cut -d '/' -f 3`
@@ -29,6 +29,7 @@ cd ..
 REPORT_PR_DIR=PR-${PR_N}
 mkdir -p docs/reports/$REPORT_PR_DIR
 mv report-generator/main.pdf docs/reports/${REPORT_PR_DIR}/${REPORT}
+# TODO : what if local changes
 git switch site
 git add docs/reports/${REPORT_PR_DIR}/${REPORT}
 git commit -m "upload report $REPORT"
