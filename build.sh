@@ -1,4 +1,6 @@
-GITHUB_REF=refs/pull/2/merge
+#!/bin/bash
+
+GITHUB_REF=$1
 CI_DIR=/home/eroussy/Documents/RTE/ci-seapath
 
 PR_N=`echo $GITHUB_REF | cut -d '/' -f 3`
