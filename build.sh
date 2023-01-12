@@ -29,14 +29,12 @@ git clone --depth 1 -b site git@github.com:eroussy/ci-seapath.git $CI_DIR/site
 cd $CI_DIR/site
 mkdir -p docs/reports/$REPORT_PR_DIR
 mv $CI_DIR/ci/report-generator/main.pdf docs/reports/${REPORT_PR_DIR}/${REPORT}
-
 git add docs/reports/${REPORT_PR_DIR}/${REPORT}
 git commit -m "upload report $REPORT"
 git push origin site
 
-gh api --method POST   -H "Accept: application/vnd.github+json" \
-/repos/eroussy/ansible/pulls/${PR_N}/reviews -f event='COMMENT' \
--f body="Report available at \
+# Give link
+echo See test Report at \
 https://eroussy.github.io/ci-seapath/reports/${REPORT_PR_DIR}/${REPORT}"
 
 # grep for succes
