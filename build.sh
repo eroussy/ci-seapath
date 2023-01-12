@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # CI_DIR=/tmp/seapath-ci-${RANDOM}
 # mkdir $CI_DIR
