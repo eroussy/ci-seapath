@@ -35,7 +35,7 @@ git push origin site
 
 # Give link
 echo See test Report at \
-https://eroussy.github.io/ci-seapath/reports/${REPORT_PR_DIR}/${REPORT}"
+https://eroussy.github.io/ci-seapath/reports/${REPORT_PR_DIR}/${REPORT}
 
 # grep for succes
 if grep -q "<failure" $CI_DIR/cukinia_tests/*; then
