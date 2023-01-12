@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 GITHUB_REF=$1
 CI_DIR=`pwd`
@@ -13,7 +14,7 @@ git checkout FETCH_HEAD
 
 # Launch tests
 mkdir $CI_DIR/cukinia_tests
-cukinia -f junitxml -o $CI_DIR/cukinia_tests/cukinia.xml $CI_DIR/ansible/cukinia.conf
+cukinia -f junitxml -o $CI_DIR/cukinia_tests/cukinia.xml $CI_DIR/ansible/cukinia.conf || true
 
 # Create report
 REPORT=test-report_pr-${PR_N}_${TIME}.pdf
