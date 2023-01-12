@@ -1,10 +1,11 @@
 #!/bin/bash
+set -e
 
 # CI_DIR=/tmp/seapath-ci-${RANDOM}
 # mkdir $CI_DIR
 # cd $CI_DIR
 # git clone --depth 1 -b test-perso git@github.com:eroussy/ci-seapath.git ci
-# ci/build.sh
+# ci/build.sh $GITHUB_REF
 
 GITHUB_REF=$1
 CI_DIR=`pwd`
@@ -45,10 +46,11 @@ https://eroussy.github.io/ci-seapath/reports/${REPORT_PR_DIR}/${REPORT}"
 
 # grep for succes
 if grep -q "<failure" $CI_DIR/cukinia_tests/*; then
-  exit 1
+  RES=1
 else
-  exit 0
+  RES=0
 fi
 
 # remove github clone dir and cukinia test dir
 rm -rf $CI_DIR
+exit $RES
