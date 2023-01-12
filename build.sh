@@ -18,6 +18,7 @@ cukinia -f junitxml -o $CI_DIR/cukinia_tests/cukinia.xml $CI_DIR/ansible/cukinia
 # Create report
 REPORT=test-report_pr-${PR_N}_${TIME}.pdf
 cd $CI_DIR/ci/report-generator
+cqfd init
 CQFD_EXTRA_RUN_ARGS="-v ${CI_DIR}/cukinia_tests:/tmp/cukinia-res" cqfd run
 
 # Upload report
