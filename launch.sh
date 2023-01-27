@@ -103,14 +103,29 @@ clean() {
   #  RES=0
   #fi
 
-  #remove github clone dir and cukinia test dir
-  #rm -rf $CI_DIR
   #exit $RES
   echo "clean"
+  exit 0
 }
 
-configuration
-setup_debian
-launch_test
-generate_report
-clean
+case "$1" in
+	config)
+    configuration
+    exit 0
+    ;;
+  setup)
+    setup_debian
+    exit 0
+    ;;
+  test)
+    launch_test
+    exit 0
+    ;;
+  report)
+    generate_report
+    exit 0
+    ;;
+  clean)
+    clean
+    ;;
+esac
