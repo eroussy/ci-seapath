@@ -66,28 +66,27 @@ setup_debian() {
 }
 
 launch_test() {
-  cd ansible
-  echo `pwd`
+  WORK_DIR=`pwd`
+  #cd ansible
+  #echo `pwd`
   #LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
   #CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
   #-i /tmp/seapath_inventories/seapath_cluster_ci.yml \
   #-i /tmp/seapath_inventories/seapath_ovs_ci.yml \
   #--key-file /tmp/ci_rsa --skip-tags "package-install" \
   #playbooks/ci_the_one_playbook.yaml
-  cd ..
   echo "TODO : Implement testing playbooks"
 
   # Generate test report
 
-  #mkdir cukinia
-  #mv ansible/*.xml cukinia
-  cd ci/report-generator
+  CUKINIA_TEST_DIR=${WORK_DIR}/cukinia
+  #mkdir $CUKINIA_TEST_DIR
+  #mv ${WORK_DIR}/ansible/*.xml $CUKINIA_TEST_DIR
+  #cd ${WORK_DIR}/ci/report-generator
   #cqfd -q init
   #if ! CQFD_EXTRA_RUN_ARGS="-v $CUKINIA_TEST_DIR:/tmp/cukinia-res" cqfd -q run; then
   #  die "cqfd error"
   #fi
-  echo `pwd`
-  cd ../..
   echo "Report generated succesfully"
 
   # Upload test report
@@ -95,14 +94,14 @@ launch_test() {
   PR_N=`echo $GITHUB_REF | cut -d '/' -f 3`
   TIME=`date +%Hh%Mm%S`
   REPORT_NAME=test-report_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}_${TIME}.pdf
-  REPORT_DIR=reports/docs/reports/PR-${PR_N}
+  REPORT_DIR=${WORK_DIR}/reports/docs/reports/PR-${PR_N}
   echo $REPORT_NAME
   echo $REPORT_DIR
 
   #git clone -q --depth 1 -b reports git@github.com:seapath/ci.git \
-  #--config core.sshCommand="ssh -i ~/.ssh/ci_rsa" reports
+  #--config core.sshCommand="ssh -i ~/.ssh/ci_rsa" ${WORK_DIR}/reports
   #mkdir -p $REPORT_DIR
-  #mv $CI_DIR/ci/report-generator/main.pdf $REPORT_DIR/$REPORT_NAME
+  #mv ${WORK_DIR}/ci/report-generator/main.pdf $REPORT_DIR/$REPORT_NAME
   #cd $REPORT_DIR
   #git config --local user.email "ci.seapath@gmail.com"
   #git config --local user.name "Seapath CI"
@@ -117,14 +116,12 @@ launch_test() {
 
   # Clean and send exit results
 
-  # grep for succes
   #if grep -q "<failure" $CUKINIA_TEST_DIR/*; then
-  #  RES=1
+  #  exit 1
   #else
-  #  RES=0
+  #  exit 0
   #fi
 
-  #exit $RES
   exit 0
 }
 
