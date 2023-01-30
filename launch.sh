@@ -54,7 +54,7 @@ configuration() {
 }
 
 setup_debian() {
-  cd ansible
+  #cd ansible
   echo `pwd`
   #LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
   #CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
