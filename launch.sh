@@ -54,6 +54,8 @@ configuration() {
 }
 
 setup_debian() {
+  cd ansible
+  echo `pwd`
   #LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
   #CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
   #-i /tmp/seapath_inventories/seapath_cluster_ci.yml \
@@ -64,21 +66,41 @@ setup_debian() {
 }
 
 launch_test() {
+  cd ansible
+  echo `pwd`
+  #LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
+  #CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
+  #-i /tmp/seapath_inventories/seapath_cluster_ci.yml \
+  #-i /tmp/seapath_inventories/seapath_ovs_ci.yml \
+  #--key-file /tmp/ci_rsa --skip-tags "package-install" \
+  #playbooks/ci_the_one_playbook.yaml
+  cd ..
   echo "TODO : Implement testing playbooks"
 
   # Generate test report
 
-  #mkdir $CUKINIA_TEST_DIR
-  #mv $CI_DIR/ansible/cukinia.xml $CUKINIA_TEST_DIR
-  #cd $CI_DIR/ci/report-generator
+  #mkdir cukinia
+  #mv ansible/*.xml cukinia
+  cd ci/report-generator
   #cqfd -q init
   #if ! CQFD_EXTRA_RUN_ARGS="-v $CUKINIA_TEST_DIR:/tmp/cukinia-res" cqfd -q run; then
   #  die "cqfd error"
   #fi
+  echo `pwd`
+  cd ../..
   echo "Report generated succesfully"
 
+  # Upload test report
+
+  PR_N=`echo $GITHUB_REF | cut -d '/' -f 3`
+  TIME=`date +%Hh%Mm%S`
+  REPORT_NAME=test-report_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}_${TIME}.pdf
+  REPORT_DIR=reports/docs/reports/PR-${PR_N}
+  echo $REPORT_NAME
+  echo $REPORT_DIR
+
   #git clone -q --depth 1 -b reports git@github.com:seapath/ci.git \
-  #--config core.sshCommand="ssh -i ~/.ssh/ci_rsa" $CI_DIR/reports
+  #--config core.sshCommand="ssh -i ~/.ssh/ci_rsa" reports
   #mkdir -p $REPORT_DIR
   #mv $CI_DIR/ci/report-generator/main.pdf $REPORT_DIR/$REPORT_NAME
   #cd $REPORT_DIR
@@ -116,7 +138,7 @@ case "$1" in
     exit 0
     ;;
   test)
-    launch_test
+    launch_test $2 $3
     exit 0
     ;;
 esac
