@@ -64,10 +64,10 @@ setup_debian() {
 }
 
 launch_test() {
-  echo "Unimplemented"
-}
+  echo "TODO : Implement testing playbooks"
 
-generate_report() {
+  # Generate test report
+
   #mkdir $CUKINIA_TEST_DIR
   #mv $CI_DIR/ansible/cukinia.xml $CUKINIA_TEST_DIR
   #cd $CI_DIR/ci/report-generator
@@ -92,10 +92,9 @@ generate_report() {
 
   echo See test Report at \
   https://github.com/seapath/ci/blob/reports/docs/reports/PR-${PR_N}/${REPORT_NAME}
-}
 
+  # Clean and send exit results
 
-clean() {
   # grep for succes
   #if grep -q "<failure" $CUKINIA_TEST_DIR/*; then
   #  RES=1
@@ -104,7 +103,6 @@ clean() {
   #fi
 
   #exit $RES
-  echo "clean"
   exit 0
 }
 
@@ -120,12 +118,5 @@ case "$1" in
   test)
     launch_test
     exit 0
-    ;;
-  report)
-    generate_report
-    exit 0
-    ;;
-  clean)
-    clean
     ;;
 esac
