@@ -23,29 +23,17 @@ EOF
 
 # Configure and prepare the CI
 configuration() {
-  #if test "$#" -ne 2; then
-  #  usage
-  #  die "invalid usage"
-  #fi
 
   #if ! type -p cqfd > /dev/null; then
   #  die "cqfd not found"
   #fi
 
-  #PR_BRANCH=$1
-  #PR_HASH=`echo $2 | cut -b 1-7`
-  #CI_DIR=`pwd`
-  #PR_N=`echo $PR_BRANCH | cut -d '/' -f 3`
-  #TIME=`date +%Hh%Mm%S`
-  #CUKINIA_TEST_DIR=$CI_DIR/cukinia_tests
-  #REPORT_NAME=test-report_${PR_HASH}_${TIME}.pdf
-  #REPORT_DIR=$CI_DIR/reports/docs/reports/PR-${PR_N}
+  # Get sources
 
-# Get sources
-  #git clone -q https://github.com/seapath/ansible
-  #cd ansible
-  #git fetch -q origin ${PR_BRANCH}
-  #git checkout -q FETCH_HEAD
+  git clone -q https://github.com/seapath/ansible
+  cd ansible
+  git fetch -q origin ${PR_BRANCH}
+  git checkout -q FETCH_HEAD
   echo "Pull request sources got succesfully"
 
   #cqfd init
@@ -54,7 +42,7 @@ configuration() {
 }
 
 setup_debian() {
-  #cd ansible
+  cd ansible
   echo `pwd`
   #LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
   #CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
@@ -67,8 +55,8 @@ setup_debian() {
 
 launch_test() {
   WORK_DIR=`pwd`
-  #cd ansible
-  #echo `pwd`
+  cd ansible
+  echo `pwd`
   #LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
   #CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
   #-i /tmp/seapath_inventories/seapath_cluster_ci.yml \
@@ -82,7 +70,7 @@ launch_test() {
   CUKINIA_TEST_DIR=${WORK_DIR}/cukinia
   #mkdir $CUKINIA_TEST_DIR
   #mv ${WORK_DIR}/ansible/*.xml $CUKINIA_TEST_DIR
-  #cd ${WORK_DIR}/ci/report-generator
+  cd ${WORK_DIR}/ci/report-generator
   #cqfd -q init
   #if ! CQFD_EXTRA_RUN_ARGS="-v $CUKINIA_TEST_DIR:/tmp/cukinia-res" cqfd -q run; then
   #  die "cqfd error"
@@ -95,14 +83,13 @@ launch_test() {
   TIME=`date +%Hh%Mm%S`
   REPORT_NAME=test-report_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}_${TIME}.pdf
   REPORT_DIR=${WORK_DIR}/reports/docs/reports/PR-${PR_N}
-  echo $REPORT_NAME
-  echo $REPORT_DIR
 
-  #git clone -q --depth 1 -b reports git@github.com:seapath/ci.git \
-  #--config core.sshCommand="ssh -i ~/.ssh/ci_rsa" ${WORK_DIR}/reports
-  #mkdir -p $REPORT_DIR
+  git clone -q --depth 1 -b reports git@github.com:seapath/ci.git \
+  --config core.sshCommand="ssh -i ~/.ssh/ci_rsa" ${WORK_DIR}/reports
+  mkdir -p $REPORT_DIR
   #mv ${WORK_DIR}/ci/report-generator/main.pdf $REPORT_DIR/$REPORT_NAME
-  #cd $REPORT_DIR
+  cd $REPORT_DIR
+  echo `pwd`
   #git config --local user.email "ci.seapath@gmail.com"
   #git config --local user.name "Seapath CI"
   #git config --local core.sshCommand "ssh -i ~/.ssh/ci_rsa"
