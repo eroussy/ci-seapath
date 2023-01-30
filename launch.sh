@@ -117,10 +117,12 @@ launch_test() {
   # Clean and send exit results
 
   #if grep -q "<failure" $CUKINIA_TEST_DIR/*; then
-  #  exit 1
+  #  RES=1
   #else
-  #  exit 0
+  #  RES=0
   #fi
+  #rm -rf $WORK_DIR
+  #exit $RES
 
   exit 0
 }
