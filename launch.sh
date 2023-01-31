@@ -55,6 +55,7 @@ setup_debian() {
 
 launch_test() {
   WORK_DIR=`pwd`
+  echo WORK_DIR = $WORK_DIR
   cd ansible
   echo `pwd`
   #LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
