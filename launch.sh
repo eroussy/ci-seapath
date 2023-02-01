@@ -47,10 +47,10 @@ initialization() {
 configure_debian() {
   cd ansible
   LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
-  CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
-  -i /tmp/seapath_inventories/seapath_cluster_ci.yml \
-  -i /tmp/seapath_inventories/seapath_ovs_ci.yml \
-  --key-file /tmp/ci_rsa --skip-tags "package-install" \
+  CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp/ci" cqfd run ansible-playbook \
+  -i /tmp/ci/seapath_inventories/seapath_cluster_ci.yml \
+  -i /tmp/ci/seapath_inventories/seapath_ovs_ci.yml \
+  --key-file /tmp/ci/ci_rsa --skip-tags "package-install" \
   playbooks/ci_restore_snapshot.yaml \
   playbooks/cluster_setup_debian.yaml \
   playbooks/cluster_setup_hardened_debian.yaml
@@ -61,10 +61,10 @@ configure_debian() {
 launch_test() {
   cd ansible
   LOCAL_ANSIBLE_DIR=/home/virtu/ansible # Local dir that contains keys and inventories
-  CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp" cqfd run ansible-playbook \
-  -i /tmp/seapath_inventories/seapath_cluster_ci.yml \
-  -i /tmp/seapath_inventories/seapath_ovs_ci.yml \
-  --key-file /tmp/ci_rsa --skip-tags "package-install" \
+  CQFD_EXTRA_RUN_ARGS="-v $LOCAL_ANSIBLE_DIR:/tmp/ci" cqfd run ansible-playbook \
+  -i /tmp/ci/seapath_inventories/seapath_cluster_ci.yml \
+  -i /tmp/ci/seapath_inventories/seapath_ovs_ci.yml \
+  --key-file /tmp/ci/ci_rsa --skip-tags "package-install" \
   playbooks/test_deploy_cukinia.yaml \
   playbooks/test_deploy_cukinia_tests.yaml \
   playbooks/test_run_cukinia.yaml
