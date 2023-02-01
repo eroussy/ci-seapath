@@ -51,7 +51,6 @@ setup_debian() {
   #--key-file /tmp/ci_rsa --skip-tags "package-install" \
   #playbooks/ci_the_one_playbook.yaml
   echo "Debian set up succesfully"
-  exit 1
 }
 
 launch_test() {
@@ -112,7 +111,7 @@ launch_test() {
   #rm -rf $WORK_DIR
   #exit $RES
 
-  exit 0
+  exit 1
 }
 
 case "$1" in
