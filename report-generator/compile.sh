@@ -88,16 +88,17 @@ add_xml_to_adoc()
     local nb_suites="$(( $(xmlstarlet sel -t -v  '//testsuite/@name' "$xml"\
         |wc -l) +1 ))"
     for i in $(seq 1 ${nb_suites}) ; do
-        local testname=$(xmlstarlet sel -t -v "//testsuite[$i]/@name" "$xml")
-        local classname=$(xmlstarlet sel -t -v "//testsuite[$i]/testcase[1]/@classname" "$xml")
-        local nb_tests=$(xmlstarlet sel -t -v "//testsuite[$i]/@tests" "$xml")
-        local failures=$(xmlstarlet sel -t -v "//testsuite[$i]/@failures" "$xml")
+        local testname classname nb_tests failures
+        testname=$(xmlstarlet sel -t -v "//testsuite[$i]/@name" "$xml")
+        classname=$(xmlstarlet sel -t -v "//testsuite[$i]/testcase[1]/@classname" "$xml")
+        nb_tests=$(xmlstarlet sel -t -v "//testsuite[$i]/@tests" "$xml")
+        failures=$(xmlstarlet sel -t -v "//testsuite[$i]/@failures" "$xml")
         local cols='"7,1"'
-        if [ -z "$testname" -o "$testname" == "default" ] ; then
+        if [ -z "$testname" ] || [ -o "$testname" == "default" ] ; then
             testname=$(basename $xml)
         fi
         echo -n "=== Tests $testname" >> "$TEST_ADOC_FILE"
-        if [ -n "$classname" -a "$classname" != "cukinia" ] ; then
+        if [ -n "$classname" ] && [ "$classname" != "cukinia" ] ; then
             echo -n " for $classname" >> "$TEST_ADOC_FILE"
         fi
         echo >> "$TEST_ADOC_FILE"

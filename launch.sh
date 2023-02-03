@@ -8,7 +8,7 @@
 set -e
 
 die() {
-	echo "CI internal failure : $@" 1>&2
+	echo "CI internal failure : $*" 1>&2
 	exit 1
 }
 
@@ -41,6 +41,7 @@ initialization() {
   cqfd init
   cqfd -b prepare
   echo "Sources prepared succesfully"
+  exit 0
 }
 
 # Launch Debian configuration and hardening
@@ -53,6 +54,7 @@ configure_debian() {
   --key-file /tmp/ci_rsa --skip-tags "package-install" \
   playbooks/ci_configure.yaml
   echo "Debian set up succesfully"
+  exit 0
 }
 
 # Prepare, launch test and upload test report
@@ -78,8 +80,8 @@ launch_test() {
 
   # Upload report
 
-  PR_N=`echo $GITHUB_REF | cut -d '/' -f 3`
-  TIME=`date +%F_%Hh%Mm%S`
+  PR_N=$(echo $GITHUB_REF | cut -d '/' -f 3)
+  TIME=$(date +%F_%Hh%Mm%S)
   REPORT_NAME=test-report_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}_${TIME}.pdf
   REPORT_DIR=${WORK_DIR}/reports/docs/reports/PR-${PR_N}
 
@@ -112,15 +114,12 @@ launch_test() {
 case "$1" in
   init)
     initialization
-    exit 0
     ;;
   conf)
     configure_debian
-    exit 0
     ;;
   test)
     launch_test
-    exit 0
     ;;
   *)
     usage
