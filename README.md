@@ -1,5 +1,6 @@
 # Continuous Integration on SEAPATH
 
+
 This repository hosts the code of the CI used on the Ansible repository.
 
 A user guide of the CI is available on [the Wiki page](https://wiki.lfenergy.org/display/SEAP/Continuous+integration+on+SEAPATH).
