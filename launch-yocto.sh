@@ -21,24 +21,9 @@ die() {
 SEAPATH_BASE_REPO="github.com/seapath"
 SEAPATH_SSH_BASE_REPO="git@github.com:seapath"
 
-# TODO : key inventory and ca
-REPO_PRIVATE_KEYFILE=inventories_private/ci_rsa # Must have 600 right
-ANSIBLE_INVENTORY=""
-CA_DIR=""
-
-CQFD_EXTRA_RUN_ARGS="-e ANSIBLE_INVENTORY=${ANSIBLE_INVENTORY}"
-
-# If REPO_PRIVATE_KEYFILE is an absolute path bind it inside cqfd
-if [[ "${REPO_PRIVATE_KEYFILE}" == /* ]] ; then
-  CQFD_EXTRA_RUN_ARGS="${CQFD_EXTRA_RUN_ARGS} -v $REPO_PRIVATE_KEYFILE:/tmp/ci_ssh_key "
-  PRIVATE_KEYFILE_PATH=/tmp/ci_ssh_key
-else
-  PRIVATE_KEYFILE_PATH="${REPO_PRIVATE_KEYFILE}"
-fi
-
-if [ -n "${CA_DIR}" ] ; then
-  CQFD_EXTRA_RUN_ARGS="${CQFD_EXTRA_RUN_ARGS} -v ${CA_DIR}:$WORK_DIR/ansible/src/ca"
-fi
+ANSIBLE_INVENTORY="/tmp/ci-private-files/ci_yocto_standalone.yaml"
+CQFD_EXTRA_RUN_ARGS="-e ANSIBLE_INVENTORY=${ANSIBLE_INVENTORY} -v /home/github/ci-private-files:/tmp/ci-private-files"
+PRIVATE_KEYFILE_PATH="/tmp/ci-private-files/ci_rsa"
 
 export CQFD_EXTRA_RUN_ARGS
 
@@ -84,7 +69,7 @@ configure_seapath() {
   cqfd run ansible-playbook \
   --key-file "${PRIVATE_KEYFILE_PATH}" \
   --skip-tags "package-install" \
-  playbooks/ # TODO : setup playbook
+  playbooks/ci_standalone_setup.yaml
   echo "SEAPATH set up succesfully"
 }
 
@@ -94,7 +79,9 @@ launch_system_tests() {
   cd ansible
   cqfd run ansible-playbook \
   --key-file "${PRIVATE_KEYFILE_PATH}" \
-  playbooks/ # TODO : setup playbook
+  -e machines_tested=hypervisors \
+  playbooks/ci_common_tests.yaml \
+  playbooks/ci_hypervisor_tests.yaml
   echo "System tests launched successfully"
 
   # Generate test report part
